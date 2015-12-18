@@ -92,12 +92,12 @@ function attachFinishedListener(msg, callback) {
   var eeSocket
   var finished = false
 
-  function onFinish(error) {
+  function onFinish(error, emitter, event) {
     eeMsg.cancel()
     eeSocket.cancel()
 
     finished = true
-    callback(error)
+    callback(error || (event === 'close' && {status: 'request-closed'}))
   }
 
   // finished on first message event
