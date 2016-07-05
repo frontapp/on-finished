@@ -44,7 +44,7 @@ var defer = typeof setImmediate === 'function'
 
 function onFinished(msg, listener) {
   if (isFinished(msg) !== false) {
-    defer(listener, null, msg)
+    defer(listener, {status: 'response_closed'}, 'direct', msg)
     return msg
   }
 
@@ -92,12 +92,12 @@ function attachFinishedListener(msg, callback) {
   var eeSocket
   var finished = false
 
-  function onFinish(error, emitter, event) {
+  function onFinish(error, emitter, e) {
     eeMsg.cancel()
     eeSocket.cancel()
 
     finished = true
-    callback(error || (event === 'close' && {status: 'request-closed'}), event)
+    callback(error || (e === 'close' && {status: 'request_closed'}), e)
   }
 
   // finished on first message event
@@ -157,7 +157,7 @@ function attachListener(msg, listener) {
  * @private
  */
 
-function createListener(msg) {
+function createListener(msg, e) {
   function listener(err) {
     if (msg.__onFrontFinished === listener) msg.__onFrontFinished = null
     if (!listener.queue) return
@@ -166,7 +166,7 @@ function createListener(msg) {
     listener.queue = null
 
     for (var i = 0; i < queue.length; i++) {
-      queue[i](err, msg)
+      queue[i](err, e, msg)
     }
   }
 

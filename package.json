@@ -1,7 +1,7 @@
 {
   "name": "front-on-finished",
   "description": "Execute a callback when a request closes, finishes, or errors",
-  "version": "2.3.0-3",
+  "version": "2.3.0-4",
   "contributors": [
     "Douglas Christopher Wilson <doug@somethingdoug.com>",
     "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)"
