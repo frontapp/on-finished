@@ -138,11 +138,11 @@ function attachFinishedListener(msg, callback) {
  */
 
 function attachListener(msg, listener) {
-  var attached = msg.__onFinished
+  var attached = msg.__onFrontFinished
 
   // create a private single listener with queue
   if (!attached || !attached.queue) {
-    attached = msg.__onFinished = createListener(msg)
+    attached = msg.__onFrontFinished = createListener(msg)
     attachFinishedListener(msg, attached)
   }
 
@@ -159,7 +159,7 @@ function attachListener(msg, listener) {
 
 function createListener(msg) {
   function listener(err) {
-    if (msg.__onFinished === listener) msg.__onFinished = null
+    if (msg.__onFrontFinished === listener) msg.__onFrontFinished = null
     if (!listener.queue) return
 
     var queue = listener.queue
